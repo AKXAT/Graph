@@ -22,7 +22,22 @@ class Graph:
                 for p in new_path:
                     paths.append(p)
         return paths
+    def get_short_path(self,start,end,path=[]):
+        path = path + [start]
+        if start not in self.graph_dict:
+            return None
+        if start==end:
+            return path
+        short_path = None
+        for node in self.graph_dict[start]:
+            if node not in path:
+                sp = self.get_short_path(node,end,path)
+                if sp:
+                    if short_path is None or len(sp) < len(short_path):
+                        short_path = sp
+        return short_path
 
+        
 if __name__ == '__main__':
     routes = [
         ("Mumbai","Paris"),
@@ -36,3 +51,4 @@ if __name__ == '__main__':
     start = 'Mumbai'
     end = 'New York'
     print(route_graph.get_paths(start,end))
+    print(route_graph.get_short_path(start,end))
